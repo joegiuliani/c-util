@@ -81,6 +81,11 @@ size_t vec_capacity(vec v)
 	return v.capacity;
 }
 
+size_t vec_elem_size(vec v)
+{
+	return v.elem_size;
+}
+
 void* vec_array(vec v)
 {
 	return v.arr;

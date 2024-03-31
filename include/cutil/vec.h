@@ -20,36 +20,39 @@ typedef struct vec_t vec;
 
 // -- Declarations / Functions --
 
-// Initializes a vec for use with the vec interface. elem_size is the size of
-// an element in bytes.
-void vec_init(vec* v, size_t elem_size);
+// Initializes a vec for use with the vec interface give the size of an element
+// in bytes.
+void vec_init(vec*, size_t);
 
 // Frees the memory used by the vec, setting the arr field to NULL. All other
 // members of the vec struct are left unchanged.
-void vec_free(vec* v);
+void vec_free(vec*);
 
 // Sets the number of elements in the vec's underlying array.
 // Returns FAILURE if the new capacity is less than the vec's size or if the
 // operation is unsuccessful
 result vec_set_capacity(vec*, size_t);
 
-result vec_set_size(vec* v, size_t new_size);
+result vec_set_size(vec*, size_t);
 
 // Returns a pointer to the first element in the vec, if any
-void* vec_begin(vec v);
+void* vec_begin(vec);
 
 // Returns a pointer to the end of the vec, immediately past the last element
 // so that, in theory, vec_end(v) == &arr[v.size]
-void* vec_end(vec v);
+void* vec_end(vec);
 
-size_t vec_size(vec v);
+size_t vec_size(vec);
 
 // Returns the number of elements in the vec's underlying array such that
 // vec_capacity(v) >= vec_size(v)
-size_t vec_capacity(vec v);
+size_t vec_capacity(vec);
 
-// Returns a pointer to the underlying array
-void* vec_array(vec v);
+// Returns the size in bytes of an element in the vec.
+size_t vec_elem_size(vec);
+
+// Returns a pointer to the underlying array.
+void* vec_array(vec);
 
 // -- Definitions / Types --
 
