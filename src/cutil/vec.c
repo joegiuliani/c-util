@@ -13,6 +13,8 @@ size_t new_capacity(size_t cap)
 	return cap * NEW_CAP_FAC;
 }
 
+// -- Definitions / Functions / vec --
+
 void vec_init(vec* v, size_t elem_size)
 {
 	v->arr       = NULL;

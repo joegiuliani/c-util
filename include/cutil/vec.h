@@ -5,37 +5,20 @@
 //  - Try to figure out how to hide implementation of vec since the user should
 // NOT be able to access vec fields.
 //  - Add vec_elem_size() and vec_array() functions to remove need for user to
-// access fields of vec.
-//  - Implement new header scheme, e.g.
-// -- Includes --
-// #include <result.h>
-// -- Includes std --
-// #include <stddef.h>
-// ...
-// -- Declarations Structs --
-// -- Declarations Structs vec--
-// typedef struct vec_t vec;
 
 // -- Includes --
 #include <cutil/config/result.h>
 #include <stddef.h>
 
-// -- vec_t Implementation --
-// The struct itself is implementation defined and only made visible so that 
-// the user can allocate it.
-// arr: The pointer to the memory block for the underlying array. Can be NULL.
-// size: the number of elements
-// capacity: the size of the memory block we allocated, if any, otherwise 0
-// elem_size: the size in bytes of a vec element
-typedef struct vec_t
-{
-	void* arr;
-	size_t size;
-	size_t capacity;
-	size_t elem_size;
-} vec;
-
 // -- Declarations --
+
+// -- Declarations / Types --
+
+// Copying a vec does not copy the underlying array but rather the pointer to
+// it. Accessing or modifying vec's fields may produce undefined behavior.
+typedef struct vec_t vec;
+
+// -- Declarations / Functions --
 
 // Initializes a vec for use with the vec interface. elem_size is the size of
 // an element in bytes.
@@ -67,5 +50,20 @@ size_t vec_capacity(vec v);
 
 // Returns a pointer to the underlying array
 void* vec_array(vec v);
+
+// -- Definitions / Types --
+
+// The fields of vec are only made visible so that the user can allocate it.
+// arr: The pointer to the memory block for the underlying array. Can be NULL.
+// size: the number of elements
+// capacity: the size of the memory block we allocated, if any, otherwise 0
+// elem_size: the size in bytes of a vec element
+typedef struct vec_t
+{
+	void* arr;
+	size_t size;
+	size_t capacity;
+	size_t elem_size;
+} vec;
 
 #endif // CUTIL_VEC_H

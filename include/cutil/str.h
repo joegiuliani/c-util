@@ -12,8 +12,12 @@
 
 #define STR_NPOS SIZE_MAX
 
+// -- Declarations Types --
+
 // str is a char vec
 typedef vec str;
+
+// -- Declarations Functions --
 
 // Initializes a str for use with the str interface.
 void str_init(str* s);
