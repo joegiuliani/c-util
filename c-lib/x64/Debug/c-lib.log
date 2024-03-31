@@ -1,9 +1,0 @@
-﻿  driver.c
-  str.c
-  vec.c
-  Generating Code...
-C:\Users\jggiu\source\repos\c-util\src\str.c(13,2): warning C4047: 'return': 'size_t' differs in levels of indirection from 'char *'
-C:\Users\jggiu\source\repos\c-util\src\vec.c(13,13): warning C4244: 'return': conversion from 'double' to 'size_t', possible loss of data
-C:\Users\jggiu\source\repos\c-util\src\vec.c(38,15): warning C4047: '==': 'int' differs in levels of indirection from 'void *'
-C:\Users\jggiu\source\repos\c-util\src\vec.c(56,32): warning C4244: 'function': conversion from 'double' to 'size_t', possible loss of data
-  c-lib.vcxproj -> C:\Users\jggiu\source\repos\c-util\x64\Debug\c-lib.exe

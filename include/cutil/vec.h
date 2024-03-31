@@ -1,5 +1,5 @@
-#ifndef VEC_H
-#define VEC_H
+#ifndef CUTIL_VEC_H
+#define CUTIL_VEC_H
 
 // -- Todo --
 //  - Try to figure out how to hide implementation of vec since the user should
@@ -68,4 +68,4 @@ size_t vec_capacity(vec v);
 // Returns a pointer to the underlying array
 void* vec_array(vec v);
 
-#endif // VEC_H
+#endif // CUTIL_VEC_H

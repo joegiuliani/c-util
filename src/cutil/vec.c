@@ -23,7 +23,7 @@ void vec_init(vec* v, size_t elem_size)
 
 void vec_free(vec* v)
 {
-	C_LIB_FREE(v->arr);
+	CUTIL_FREE(v->arr);
 }
 
 int vec_set_capacity(vec* v, size_t new_cap)
@@ -34,13 +34,13 @@ int vec_set_capacity(vec* v, size_t new_cap)
 		return SUCCESS;
 	if (v->arr == NULL)
 	{
-		v->arr = C_LIB_MALLOC(new_cap * v->elem_size);
+		v->arr = CUTIL_MALLOC(new_cap * v->elem_size);
 		if (!v->arr == NULL)
 			return FAILURE;
 	}
 	else
 	{
-		void* new_block = C_LIB_REALLOC(v->arr, new_cap * v->elem_size);
+		void* new_block = CUTIL_REALLOC(v->arr, new_cap * v->elem_size);
 		if (new_block == NULL)
 			return FAILURE;
 		else
