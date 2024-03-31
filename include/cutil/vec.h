@@ -1,8 +1,23 @@
 #ifndef VEC_H
 #define VEC_H
 
+// -- Todo --
+//  - Try to figure out how to hide implementation of vec since the user should
+// NOT be able to access vec fields.
+//  - Add vec_elem_size() and vec_array() functions to remove need for user to
+// access fields of vec.
+//  - Implement new header scheme, e.g.
 // -- Includes --
-#include <result.h>
+// #include <result.h>
+// -- Includes std --
+// #include <stddef.h>
+// ...
+// -- Declarations Structs --
+// -- Declarations Structs vec--
+// typedef struct vec_t vec;
+
+// -- Includes --
+#include <cutil/config/result.h>
 #include <stddef.h>
 
 // -- vec_t Implementation --

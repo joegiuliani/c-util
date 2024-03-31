@@ -129,15 +129,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\allocation.h" />
-    <ClInclude Include="include\result.h" />
-    <ClInclude Include="include\str.h" />
-    <ClInclude Include="include\vec.h" />
+    <ClInclude Include="include\cutil\config\allocation.h" />
+    <ClInclude Include="include\cutil\config\result.h" />
+    <ClInclude Include="include\cutil\str.h" />
+    <ClInclude Include="include\cutil\vec.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="driver.c" />
-    <ClCompile Include="src\str.c" />
-    <ClCompile Include="src\vec.c" />
+    <ClCompile Include="src\cutil\str.c" />
+    <ClCompile Include="src\cutil\vec.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

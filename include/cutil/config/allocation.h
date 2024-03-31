@@ -1,5 +1,5 @@
-#ifndef ALLOCATION_H
-#define ALLOCATION_H
+#ifndef CUTIL_CONFIG_ALLOCATION_H
+#define CUTIL_CONFIG_ALLOCATION_H
 
 // -- Purpose --
 // The user may bind their own functions to any of the c-lib memory allocation
@@ -40,4 +40,4 @@
 #define C_LIB_FREE free
 #endif
 
-#endif ALLOCATION_H
+#endif // CUTIL_CONFIG_ALLOCATION_H

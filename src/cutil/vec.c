@@ -1,8 +1,7 @@
-#include <vec.h>
-#include <allocation.h>
+#include <cutil/vec.h>
+#include <cutil/config/allocation.h>
 #include <stdlib.h>
 #include <stdint.h>
-#
 
 #define NEW_CAP_FAC 1.5
 

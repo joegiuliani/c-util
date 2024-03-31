@@ -1,5 +1,5 @@
-#ifndef RESULT_H
-#define RESULT_H
+#ifndef CUTIL_CONFIG_RESULT_H
+#define CUTIL_CONFIG_RESULT_H
 
 // -- Declarations --
 
@@ -9,4 +9,4 @@
 // The return type of a function that can either succeed or fail
 typedef int result;
 
-#endif // RESULT_H
+#endif // CUTIL_CONFIG_RESULT_H
