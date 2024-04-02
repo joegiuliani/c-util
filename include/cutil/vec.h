@@ -2,9 +2,24 @@
 #define CUTIL_VEC_H
 
 // -- Todo --
-//  - Try to figure out how to hide implementation of vec since the user should
-// NOT be able to access vec fields.
-//  - Add vec_elem_size() and vec_array() functions to remove need for user to
+// - Address endianess
+// - Figure out design for letting user define a custom capacity expansion func
+
+// -- Note --
+// There seems to be an exhaustive use of comments here because I want to be as
+// explicit and deterministic about the properties and behavioral guarantees of
+// such a fundamental data type.
+// 
+// For information on c-util memory allocation and the c-util memory allocation
+// macro, see <c-util/config/allocation.h>"
+
+// -- Terms --
+// vector: a resizable array type, like Java's ArrayList or C++'s std::vector
+// with explict memory allocation policies
+// size: the number of elements in a vec or array
+// capacity: the size of the underyling array
+// element size: a vec's element size in bytes
+// vec: an instance of the vector type
 
 // -- Includes --
 #include <cutil/config/result.h>
@@ -12,61 +27,64 @@
 
 // -- Declarations --
 
+// An invalid vector type, implemented here as (vec)0, expanding to (void*)0,
+// to be returned by vec_init(). The macro is defined in terms of vec so that
+// if vec changes to non castable, the developer will be warned to change this
+// macro as well.
+#define VEC_INVALID ((vec)0)
+
 // -- Declarations / Types --
 
-// Copying a vec does not copy the underlying array but rather the pointer to
-// it. Accessing or modifying vec's fields may produce undefined behavior.
-typedef struct vec_t vec;
+// Uses the c-util memory allocation macro to allocate memory. The lifetime of
+// the memory allocated by a vec is the same as a vec. The memory allocated by
+// a vec has a lifetime ended by calling vec_free() on the vec.
+// The following are simultaneously true for a valid vec v and an element of v,
+// e:
+// 1. v was returned by vec_init()
+// 2. v has not been not passed to vec_free()
+// 2. v != VEC_INVALID
+// 3. v's use with the vec namespace/interface causes only defined behavior
+// 4. e is in v if &e == vec_array(v)+sizeof(e)*e and
+// &e < (int8_t*)vec_array(v)+sizeof(e)*vec_size(v)
+// 5. sizeof(e) == vec_elem_size(v)  
+// 6. vec_size(v) <= vec_capacity(v)
+typedef void* vec;
 
 // -- Declarations / Functions --
 
-// Initializes a vec for use with the vec interface give the size of an element
-// in bytes.
-void vec_init(vec*, size_t);
+// -- Note --
+// Some if not all functions have a vec in question or to operate on. Functions
+// do not check for the validity of said vec. If said vec is invalid then
+// behavior is undefined.
 
-// Frees the memory used by the vec, setting the arr field to NULL. All other
-// members of the vec struct are left unchanged.
-void vec_free(vec*);
+// Returns VEC_INVALID if the function fails.
+vec vec_init(size_t init_size, size_t elem_size);
 
-// Sets the number of elements in the vec's underlying array.
-// Returns FAILURE if the new capacity is less than the vec's size or if the
+// Frees the memory allocated by the vec
+void vec_free(vec);
+
+// Sets the number of elements in the underlying array.
+// Returns FAILURE if the new capacity is less than the size or if the
 // operation is unsuccessful
-result vec_set_capacity(vec*, size_t);
+result vec_set_capacity(vec, size_t);
 
-result vec_set_size(vec*, size_t);
-
-// Returns a pointer to the first element in the vec, if any
-void* vec_begin(vec);
-
-// Returns a pointer to the end of the vec, immediately past the last element
-// so that, in theory, vec_end(v) == &arr[v.size]
-void* vec_end(vec);
+// Does not allocate more memory if new size <= current size
+result vec_set_size(vec, size_t);
 
 size_t vec_size(vec);
 
-// Returns the number of elements in the vec's underlying array such that
+// Returns the number of elements in the vector's underlying array such that
 // vec_capacity(v) >= vec_size(v)
 size_t vec_capacity(vec);
 
-// Returns the size in bytes of an element in the vec.
+// Returns the size in bytes of an element
 size_t vec_elem_size(vec);
 
-// Returns a pointer to the underlying array.
+// Returns a pointer to the underlying array
 void* vec_array(vec);
 
-// -- Definitions / Types --
-
-// The fields of vec are only made visible so that the user can allocate it.
-// arr: The pointer to the memory block for the underlying array. Can be NULL.
-// size: the number of elements
-// capacity: the size of the memory block we allocated, if any, otherwise 0
-// elem_size: the size in bytes of a vec element
-typedef struct vec_t
-{
-	void* arr;
-	size_t size;
-	size_t capacity;
-	size_t elem_size;
-} vec;
+// Returns the number of bytes of memory a vec has allocated with the c-util
+// memory allocation macro
+size_t vec_num_allocd_bytes(vec);
 
 #endif // CUTIL_VEC_H

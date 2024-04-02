@@ -3,7 +3,15 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#define NEW_CAP_FAC 1.5
+// -- Definitions -- 
+
+#define NEW_CAP_FAC  1.5
+#define HEADER_SIZE  (sizeof(size_t)*3) 
+#define DATA_SIZE(v) (*((int8_t*)(v) + sizeof(size_t)*0))
+#define CAPACITY(v)  (*((int8_t*)(v) + sizeof(size_t)*1))
+#define ELEM_SIZE(v) (*((int8_t*)(v) + sizeof(size_t)*2))
+#define DATA(v)      (*((int8_t*)(v) + sizeof(size_t)*3))
+#define HEAP_SIZE(v) (HEADER_SIZE + DATA_SIZE(v))
 
 // Policy for how to increase a vec's capacity based on its current capacity
 size_t new_capacity(size_t cap)
@@ -15,78 +23,69 @@ size_t new_capacity(size_t cap)
 
 // -- Definitions / Functions / vec --
 
-void vec_init(vec* v, size_t elem_size)
+vec vec_init(size_t init_size, size_t elem_size)
 {
-	v->arr       = NULL;
-	v->capacity  = 0;
-	v->size      = 0;
-	v->elem_size = elem_size;
+	vec v = (vec)malloc(HEADER_SIZE + init_size * elem_size);
+	if (v == NULL) return VEC_INVALID;
+	DATA_SIZE(v) = init_size;
+	CAPACITY(v) = init_size;
+	ELEM_SIZE(v) = elem_size;
+	return v;
 }
 
-void vec_free(vec* v)
+void vec_free(vec v)
 {
-	CUTIL_FREE(v->arr);
+	CUTIL_FREE(v);
 }
 
-int vec_set_capacity(vec* v, size_t new_cap)
+int vec_set_capacity(vec v, size_t new_cap)
 {
-	if (new_cap < v->size)
+	if (new_cap < DATA_SIZE(v))
 		return FAILURE;
-	if (new_cap == v->capacity)
+	if (new_cap == CAPACITY(v))
 		return SUCCESS;
-	if (v->arr == NULL)
-	{
-		v->arr = CUTIL_MALLOC(new_cap * v->elem_size);
-		if (!v->arr == NULL)
-			return FAILURE;
-	}
-	else
-	{
-		void* new_block = CUTIL_REALLOC(v->arr, new_cap * v->elem_size);
-		if (new_block == NULL)
-			return FAILURE;
-		else
-			v->arr = new_block;
-	}
-	v->capacity = new_cap;
+	void* new_block = CUTIL_REALLOC(v, HEADER_SIZE + new_cap * ELEM_SIZE(v));
+	if (new_block == NULL)
+		return FAILURE;
+	CAPACITY(v) = new_cap;
 	return SUCCESS;
 }
 
-int vec_set_size(vec* v, size_t new_size)
+int vec_set_size(vec v, size_t new_size)
 {
-	if (new_size > v->capacity && 
+	if (new_size > CAPACITY(v) && 
 		vec_set_capacity(v, new_size * NEW_CAP_FAC) == FAILURE)
 			return FAILURE;
-	v->size = new_size;
+	DATA_SIZE(v) = new_size;
 	return SUCCESS;
 }
 
 void* vec_begin(vec v)
 {
-	return v.arr;
+	return DATA(v);
 }
 
 void* vec_end(vec v)
 {
-	return ((int8_t*)v.arr) + v.size * v.elem_size;
+	return ((int8_t*)DATA(v)) + DATA_SIZE(v) * ELEM_SIZE(v);
 }
 
 size_t vec_size(vec v)
 {
-	return v.size;
+	return DATA_SIZE(v);
 }
 
 size_t vec_capacity(vec v)
 {
-	return v.capacity;
+	return CAPACITY(v);
 }
 
 size_t vec_elem_size(vec v)
 {
-	return v.elem_size;
+	return ELEM_SIZE(v);
 }
 
 void* vec_array(vec v)
 {
-	return v.arr;
+	return DATA(v);
 }
