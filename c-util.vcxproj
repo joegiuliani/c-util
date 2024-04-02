@@ -136,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="driver.c" />
+    <ClCompile Include="src\cutil\config\result.c" />
     <ClCompile Include="src\cutil\str.c" />
     <ClCompile Include="src\cutil\vec.c" />
   </ItemGroup>

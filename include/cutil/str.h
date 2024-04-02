@@ -9,7 +9,6 @@
 
 #define STR_INVALID VEC_INVALID
 #define STR_NPOS SIZE_MAX
-#define write
 
 // -- Declarations Types --
 

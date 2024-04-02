@@ -10,8 +10,6 @@ void add_null_termination(str s)
 str str_init(size_t init_size)
 {
 	vec v = vec_init(init_size, sizeof(char));
-	// If the compiler does not optimize this away when
-	// VEC_INVALID == STR_INVALID then I will scream
 	if (v == VEC_INVALID) return STR_INVALID;
 	return v;
 }

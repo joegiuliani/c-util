@@ -36,26 +36,25 @@
 // -- Declarations / Types --
 
 // Uses the c-util memory allocation macro to allocate memory. The lifetime of
-// the memory allocated by a vec is the same as a vec. The memory allocated by
-// a vec has a lifetime ended by calling vec_free() on the vec.
-// The following are simultaneously true for a valid vec v and an element of v,
-// e:
+// the memory allocated by a vec is not the same as a vec. The memory allocated
+// by a vec has a lifetime ended by calling vec_free() on the vec.
+// The following are simultaneously true for a valid vec v and
+// an element e of v:
 // 1. v was returned by vec_init()
-// 2. v has not been not passed to vec_free()
-// 2. v != VEC_INVALID
-// 3. v's use with the vec namespace/interface causes only defined behavior
-// 4. e is in v if &e == vec_array(v)+sizeof(e)*e and
+// 3. v has not been not passed to vec_free()
+// 4. v != VEC_INVALID
+// 5. v's use with the vec namespace/interface causes only defined behavior
+// 6. e is in v if &e == vec_array(v)+sizeof(e)*e and
 // &e < (int8_t*)vec_array(v)+sizeof(e)*vec_size(v)
-// 5. sizeof(e) == vec_elem_size(v)  
-// 6. vec_size(v) <= vec_capacity(v)
+// 7. sizeof(e) == vec_elem_size(v)  
+// 8. vec_size(v) <= vec_capacity(v)
+// 9. if size_t s <= vec_size(v), then vec_set_size(v) makes no memory
+// allocation calls
 typedef void* vec;
 
 // -- Declarations / Functions --
 
-// -- Note --
-// Some if not all functions have a vec in question or to operate on. Functions
-// do not check for the validity of said vec. If said vec is invalid then
-// behavior is undefined.
+// Disclaimer: vec functions do not check the validity of the vec in question
 
 // Returns VEC_INVALID if the function fails.
 vec vec_init(size_t init_size, size_t elem_size);
