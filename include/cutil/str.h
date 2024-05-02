@@ -18,9 +18,9 @@ typedef vec str;
 // -- Declarations Functions --
 
 // Initializes a str for use with the str interface.
-// If init_size > 0, then the value of the string coule be anything, for
-// instance gibersih, or even all null characters.
-str str_init(size_t init_size);
+// If init_size > 0, then the value of the string could be anything, for
+// instance giberrish, or even all null characters.
+str str_new(size_t init_size);
 
 // Returns the index of the first occurrence of c in s at or past index offset
 // or STR_NPOS if none was found

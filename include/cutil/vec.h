@@ -28,28 +28,24 @@
 // -- Declarations --
 
 // An invalid vector type, implemented here as (vec)0, expanding to (void*)0,
-// to be returned by vec_init(). The macro is defined in terms of vec so that
-// if vec changes to non castable, the developer will be warned to change this
-// macro as well.
+// to be returned by vec_init()
 #define VEC_INVALID ((vec)0)
 
 // -- Declarations / Types --
 
-// Uses the c-util memory allocation macro to allocate memory. The lifetime of
-// the memory allocated by a vec is not the same as a vec. The memory allocated
-// by a vec has a lifetime ended by calling vec_free() on the vec.
+// Uses the c-util memory allocation macro to allocate memory. The memory
+// allocated by a vec has a lifetime ended by calling vec_free() on the vec.
 // The following are simultaneously true for a valid vec v and
 // an element e of v:
 // 1. v was returned by vec_init()
-// 3. v has not been not passed to vec_free()
-// 4. v != VEC_INVALID
-// 5. v's use with the vec namespace/interface causes only defined behavior
-// 6. e is in v if &e == vec_array(v)+sizeof(e)*e and
-// &e < (int8_t*)vec_array(v)+sizeof(e)*vec_size(v)
-// 7. sizeof(e) == vec_elem_size(v)  
-// 8. vec_size(v) <= vec_capacity(v)
-// 9. if size_t s <= vec_size(v), then vec_set_size(v) makes no memory
-// allocation calls
+// 2. v has not been not passed to vec_free()
+// 3. v != VEC_INVALID
+// 4. v's use with the vec namespace/interface causes only defined behavior
+// 5. e is in v if &e == vec_array(v)+sizeof(e)*indexof(e) and
+//    &e < (int8_t*)vec_array(v)+sizeof(e)*vec_size(v)
+// 6. sizeof(e) == vec_elem_size(v)  
+// 7. vec_size(v) <= vec_capacity(v)
+
 typedef void* vec;
 
 // -- Declarations / Functions --
@@ -57,7 +53,7 @@ typedef void* vec;
 // Disclaimer: vec functions do not check the validity of the vec in question
 
 // Returns VEC_INVALID if the function fails.
-vec vec_init(size_t init_size, size_t elem_size);
+vec vec_new(size_t init_size, size_t elem_size);
 
 // Frees the memory allocated by the vec
 void vec_free(vec);

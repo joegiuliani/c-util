@@ -23,7 +23,7 @@ size_t new_capacity(size_t cap)
 
 // -- Definitions / Functions / vec --
 
-vec vec_init(size_t init_size, size_t elem_size)
+vec vec_new(size_t init_size, size_t elem_size)
 {
 	vec v = (vec)malloc(HEADER_SIZE + init_size * elem_size);
 	if (v == NULL) return VEC_INVALID;

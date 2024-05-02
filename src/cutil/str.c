@@ -7,9 +7,9 @@ void add_null_termination(str s)
 	((char*)vec_array(s))[str_len(s)] = '\0';
 }
 
-str str_init(size_t init_size)
+str str_new(size_t init_size)
 {
-	vec v = vec_init(init_size, sizeof(char));
+	vec v = vec_new(init_size, sizeof(char));
 	if (v == VEC_INVALID) return STR_INVALID;
 	return v;
 }
